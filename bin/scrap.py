@@ -19,13 +19,15 @@ clean = lambda x: re_clean_spaces.sub(' ', re_clean_bal.sub('', x)).strip()
 
 re_line = re.compile(r'<page number|text top="(\d+)" left="(\d+)"[^>]*font="(\d+)">(.*)</text>', re.I)
 re_extract_field = re.compile(r'^\s*<b>\s*([^<:]+)[:\s]*</b>\s*(.*)$')
+re_extract_date = re.compile(r'^\s*<b>Date:\s*(\d+)/(\d+)/(\d+)\s*Signature.*$')
+
 
 mint = 370
 maxt = 830
 page = 0
 readTable = False
 field = None
-headers = ['Family name', 'First name', 'Title', 'Profession', 'Date', 'Current EFSA involvements', '']
+headers = ['Family name', 'First name', 'Title', 'Date', 'Profession', 'Current EFSA involvements', '']
 
 record = {}
 for line in (xml).split("\n"):
@@ -52,7 +54,7 @@ for line in (xml).split("\n"):
         if text.lstrip().startswith("<b>"):
             field, val = map(clean, re_extract_field.search(text).groups())
             if field == "Name":
-                record["First name"], record["Family name"] = val.split(', ')
+                record["Family name"], record["First name"] = val.split(', ')
             elif field.startswith("Nature"):
                 readTable = True
             else:
@@ -61,6 +63,8 @@ for line in (xml).split("\n"):
             appendValToField(record, field, val)
         if not readTable:
             continue
+    elif text.lstrip().startswith('<b>Date:'):
+        record['Date'] = clean(re_extract_date.sub(r'\3-\2-\1', text))
 
 print ",".join(['"%s"' % h for h in headers])
 print ",".join([('"%s"' % record[h].replace('"', '""')).encode('utf-8') if h in record else "" for h in headers])
