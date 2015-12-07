@@ -67,4 +67,4 @@ for group in activities_by_group:
 headers_nature = headers[0:2] + headers[3:]
 for nature in activities_by_nature:
     with open(os.path.join("data", "EFSA_experts_activities_cat-%s.csv" % nature[:nature.find(".")]), "w") as f:
-        write_csv(f, sorted(activities_by_nature[nature], key=lambda x: "%s - %s - %s" % (x["Subject group"], x["Full name"], x["Start date"])), headers_group)
+        write_csv(f, sorted(activities_by_nature[nature], key=lambda x: "%s - %s - %s" % (x["Subject group"], x["Full name"], x["Start date"])), headers_nature)
