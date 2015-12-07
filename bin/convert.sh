@@ -6,6 +6,7 @@ OUT=$(echo "$SOURCE" | sed -r 's|^.*/([^/]*)$|\1|')
 
 mkdir -p data/DOIs
 pdftohtml -xml "$PDF" > /dev/null
-#bin/scrap.py "$SOURCE".xml > data/DOIs/"$OUT".csv
-#rm -f "$SOURCE".xml
+bin/scrap.py "$SOURCE".xml > data/DOIs/"$OUT".json
+rm -f "$SOURCE".xml
 rm -f $SOURCE-*.png
+
