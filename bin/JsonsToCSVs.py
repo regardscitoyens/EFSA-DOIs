@@ -18,7 +18,7 @@ for path, _, filenames in os.walk(os.path.join("data", "DOIs")):
 def format_for_csv(val):
     if not val:
         return ""
-    elif "," in val:
+    elif "," in val or '"' in val:
         val = '"%s"' % val.replace('"', '""')
     return val.encode("utf-8")
 
