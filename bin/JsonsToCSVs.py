@@ -42,7 +42,8 @@ for expert in experts:
             "Organisation": act[1],
             "Subject matter": act[2],
             "Start date": act[3],
-            "End date": act[4]
+            "End date": act[4],
+            "Activity of a close family member": act[5]
         }
         for h in headers:
             activity[h] = expert[h]
@@ -54,7 +55,7 @@ for expert in experts:
             activities_by_nature[activity["Nature of activity"]] = []
         activities_by_nature[activity["Nature of activity"]].append(activity)
 
-headers = ['Subject group', 'Full name', 'Nature of activity', 'Organisation', 'Subject matter', 'Start date', 'End date', 'DOI date', 'PDF']
+headers = ['Subject group', 'Full name', 'Nature of activity', 'Activity of a close family member', 'Organisation', 'Subject matter', 'Start date', 'End date', 'DOI date', 'PDF']
 with open(os.path.join("data", "EFSA_experts_activities.csv"), "w") as f:
     write_csv(f, sorted(activities, key=lambda x: "%s - %s - %s - %s" % (x["Subject group"], x["Full name"], x["Nature of activity"], x["Start date"])), headers)
 

@@ -35,10 +35,9 @@ page = 0
 readTable = False
 readRecords = False
 field = None
-headers = ['Family name', 'First name', 'Title', 'Date', 'Profession', 'Current EFSA involvements', '']
 
 record = {"activities": []}
-activity = ["", "", "", "", ""]
+activity = ["", "", "", "", "", ""]
 for line in (xml).split("\n"):
     if line.startswith('<page'):
         page += 1
@@ -80,9 +79,13 @@ for line in (xml).split("\n"):
     if not readRecords or text.startswith('<b>Subject '):
         continue
     if left == l1:
-        if activity[2]:
+        if "(Close family" in val:
             record["activities"].append(list(activity))
-            activity = [val, "", "", "", ""]
+            activity = [activity[0], "", "", "", "", "X"]
+            continue
+        elif activity[2]:
+            record["activities"].append(list(activity))
+            activity = [val, "", "", "", "", ""]
             continue
         activity[0] = appendText(activity[0], val)
     elif left == l2:
@@ -91,7 +94,7 @@ for line in (xml).split("\n"):
         end = match[2] if not match[3] else "%s-%s" % (match[4], match[3])
         if activity[2]:
             record["activities"].append(list(activity))
-            activity = [activity[0], "", "", start, end]
+            activity = [activity[0], "", "", start, end, activity[5]]
             continue
         activity[3] = start
         activity[4] = end
@@ -100,7 +103,7 @@ for line in (xml).split("\n"):
             val = val.replace('-Name: ', '')
         if activity[2]:
             record["activities"].append(list(activity))
-            activity = [activity[0], val, "", activity[3], activity[4]]
+            activity = [activity[0], val, "", activity[3], activity[4], activity[5]]
             continue
         activity[1] = appendText(activity[1], val)
     elif left == l4:
