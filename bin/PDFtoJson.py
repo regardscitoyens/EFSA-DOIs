@@ -105,7 +105,14 @@ for line in (xml).split("\n"):
             record["activities"].append(list(activity))
             activity = [activity[0], val, "", activity[3], activity[4], activity[5]]
             continue
-        activity[1] = appendText(activity[1], val)
+        if val == "German Endocrine Society Member":
+            activity[1] = "German Endocrine Society"
+            activity[2] = "Member"
+        elif val == "British Toxicology Society scientific society":
+            activity[1] = "British Toxicology Society"
+            activity[2] = "scientific society"
+        else:
+            activity[1] = appendText(activity[1], val)
     elif left == l4:
         activity[2] = appendText(activity[2], val)
     else:
